@@ -15,11 +15,11 @@ def before_request():
 
 @app.route('/')
 def hello():
-    return 'Hello DevOps World!'
+    return 'Hello k8s-prometheus-demo World!'
 
 @app.route('/health')
 def health():
-    return 'OK', 200
+    return 'k8s-prometheus-demo OK', 200
 
 @app.route("/metrics")
 def metrics():

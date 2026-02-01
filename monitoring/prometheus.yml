@@ -2,6 +2,6 @@ global:
   scrape_interval: 5s
 
 scrape_configs:
-  - job_name: "my-devops-app"
+  - job_name: "k8s-prometheus-app"
     static_configs:
       - targets: ["app:5000"]
