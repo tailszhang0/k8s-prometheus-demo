@@ -1,0 +1,64 @@
+precondition:
+refer to my-devops-demo project
+
+1. add to requirement.txt
+prometheus-client
+
+2. update app.py
+REQUEST_COUNT = Counter(
+    "app_requests_total",
+    "Total request count",
+    ["method", "endpoint"]
+)
+
+@app.before_request
+def before_request():
+    REQUEST_COUNT.labels("GET", "/").inc()
+
+@app.route("/metrics")
+def metrics():
+    return generate_latest(), 200, {'Content-Type': CONTENT_TYPE_LATEST}
+
+3. test in local env
+pip install --no-cache-dir -r requirements.txt
+cd app
+python app.py
+visit http://localhost:5000/ and refresh for sometimes
+visit http://localhost:5000/metrics
+if you see app_requests_total{endpoint="/",method="GET"}, xxx, then the test is passed
+stop local python
+
+4. start flask app on k8s
+kubectl apply -f argocd/my-devops-app-application.yaml
+kubectl port-forward -n default svc/my-devops-app-service 5000:5000
+
+5. mkdir monitoring
+
+6. create file monitoring\prometheus.yml
+global:
+  scrape_interval: 5s
+
+scrape_configs:
+  - job_name: "my-devops-app"
+    static_configs:
+      - targets: ["app:5000"]
+
+7. create file docker-compose.prom.yml
+version: "3"
+services:
+  app:
+    build: .
+    ports:
+      - "5000:5000"
+
+  prometheus:
+    image: prom/prometheus
+    volumes:
+      - ./monitoring/prometheus.yml:/etc/prometheus/prometheus.yml
+    ports:
+      - "9090:9090"
+
+8. startup prometheus
+docker compose -f monitoring/docker-compose.prom.yml up
+
+9. visit http://localhost:9090
