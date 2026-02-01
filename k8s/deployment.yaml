@@ -16,7 +16,7 @@ spec:
     spec:
       containers:
         - name: k8s-prometheus-app
-          image: tails1982/k8s-prometheus-app:latest
+          image: tails1982/k8s-prometheus-app:2
           ports:
             - containerPort: 5000
           readinessProbe:
