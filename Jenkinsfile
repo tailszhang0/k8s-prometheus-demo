@@ -3,14 +3,14 @@ pipeline {
 
     environment {
         DOCKERHUB_USER = 'tails1982'
-        IMAGE_NAME = 'my-devops-app'
+        IMAGE_NAME = 'k8s-prometheus-app'
         IMAGE_TAG = "${BUILD_ID}"
     }
 
     stages {
         stage("Checkout") {
             steps {
-                git branch: 'main', url: 'https://github.com/tailszhang0/my-devops-demo.git'
+                git branch: 'main', url: 'https://github.com/tailszhang0/k8s-prometheus-demo.git'
             }
         }
 
@@ -93,7 +93,7 @@ pipeline {
                       git config user.name "jenkins"
                       git config user.email "jenkins@local"
 
-                      git remote set-url origin https://${GIT_USER}:${GIT_TOKEN}@github.com/tailszhang0/my-devops-demo.git
+                      git remote set-url origin https://${GIT_USER}:${GIT_TOKEN}@github.com/tailszhang0/k8s-prometheus-demo.git
 
                       yq -i '.spec.template.spec.containers[0].image = "'$DOCKERHUB_USER'/'$IMAGE_NAME':'$IMAGE_TAG'"' k8s/deployment.yaml
 

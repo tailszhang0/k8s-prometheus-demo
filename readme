@@ -29,8 +29,8 @@ if you see app_requests_total{endpoint="/",method="GET"}, xxx, then the test is 
 stop local python
 
 4. start flask app on k8s
-kubectl apply -f argocd/my-devops-app-application.yaml
-kubectl port-forward -n default svc/my-devops-app-service 5000:5000
+kubectl apply -f argocd/k8s-prometheus-app-application.yaml
+kubectl port-forward -n default svc/k8s-prometheus-app-service 5000:5000
 
 5. mkdir monitoring
 
@@ -39,7 +39,7 @@ global:
   scrape_interval: 5s
 
 scrape_configs:
-  - job_name: "my-devops-app"
+  - job_name: "k8s-prometheus-app"
     static_configs:
       - targets: ["app:5000"]
 
@@ -58,7 +58,11 @@ services:
     ports:
       - "9090:9090"
 
-8. startup prometheus
+8. commit and push the change to github
+
+9. run jenkins job to deploy the latest flask app
+
+10. startup prometheus
 docker compose -f monitoring/docker-compose.prom.yml up
 
-9. visit http://localhost:9090
+11. visit http://localhost:9090

@@ -1,22 +1,22 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: my-devops-app
+  name: k8s-prometheus-app
   labels:
-    app: my-devops-app
+    app: k8s-prometheus-app
 spec:
   replicas: 1
   selector:
     matchLabels:
-      app: my-devops-app
+      app: k8s-prometheus-app
   template:
     metadata:
       labels:
-        app: my-devops-app
+        app: k8s-prometheus-app
     spec:
       containers:
-        - name: my-devops-app
-          image: tails1982/my-devops-app:94
+        - name: k8s-prometheus-app
+          image: tails1982/k8s-prometheus-app:latest
           ports:
             - containerPort: 5000
           readinessProbe:

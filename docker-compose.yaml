@@ -1,7 +1,7 @@
 version: '3'
 services:
   web:
-    image: 'tails1982/my-devops-app:latest'
+    image: 'tails1982/k8s-prometheus-app:latest'
     ports:
       - "5000:5000"
     healthcheck:
